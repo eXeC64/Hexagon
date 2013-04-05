@@ -27,7 +27,7 @@ and loop it, until then the game is silent.
 towards the experience
  * No high scores - Obviously this should be subject to always-online DRM with
 lots of safeguards that hassle the player(!)
- * No menu or settings - A way to choose varius difficulties and change
+ * No menu or settings - A way to choose various difficulties and change
 settings would really bring this up to the level of Super Hexagon.
 
 License
