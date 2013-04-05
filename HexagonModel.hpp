@@ -1,7 +1,5 @@
 #pragma once
 
-#define MAX_SIDES 8
-
 struct Obstacle;
 
 class HexagonModel
