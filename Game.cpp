@@ -23,9 +23,9 @@ void Game::Run()
 
     HexagonView view;
     view.SetModel(m_model);
-    view.SetBaseHue(0.1);
-    view.SetHueRange(0.1);
-    view.SetHueSpeed(2);
+    view.SetBaseHue(0.3);
+    view.SetHueRange(0.3);
+    view.SetHueSpeed(0.5);
 
     m_window = new sf::RenderWindow(sf::VideoMode(1280,720), "Hexagon");
 

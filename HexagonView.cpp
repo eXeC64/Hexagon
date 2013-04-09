@@ -131,7 +131,15 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
 const double HexagonView::Hue() const
 {
     if(m_model) {
-        return abs(m_baseHue + m_hueRange * sin(m_model->GetTime() * m_hueSpeed)) % 1;
+        const double hueDiff = m_hueRange * sin(m_model->GetTime() * m_hueSpeed);
+        const double hue = m_baseHue + hueDiff;
+        if(hue <= 0) {
+            return 0;
+        } else if(hue >= 1) {
+            return 1;
+        } else {
+            return hue;
+        }
     } else {
         return m_baseHue;
     }
@@ -148,15 +156,18 @@ const double HexagonView::Sat() const
 
 void HexagonView::SetBaseHue(const double hue)
 {
-    const double posHue = abs(hue);
-    if(posHue <= 1) {
-        m_baseHue = posHue;
+    if(hue <= 0) {
+        m_baseHue = 0;
+    } else if(hue >= 1) {
+        m_baseHue =  1;
+    } else {
+        m_baseHue = hue;
     }
 }
 
 void HexagonView::SetHueRange(const double range)
 {
-    m_hueRange = abs(range);
+    m_hueRange = range;
 }
 
 void HexagonView::SetHueSpeed(const double speed)
