@@ -133,10 +133,10 @@ const double HexagonView::Hue() const
     if(m_model) {
         const double hueDiff = m_hueRange * sin(m_model->GetTime() * m_hueSpeed);
         const double hue = m_baseHue + hueDiff;
-        if(hue <= 0) {
-            return 0;
-        } else if(hue >= 1) {
-            return 1;
+        if(hue < 0) {
+            return 1 - hue;
+        } else if(hue > 1) {
+            return hue - 1;
         } else {
             return hue;
         }
