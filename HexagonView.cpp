@@ -86,7 +86,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
 
     //Draw player
     {
-        sf::ConvexShape playerShape(4);
+        sf::ConvexShape playerShape(3);
         const double pos = m_model->GetPlayerPosition();
         const double scale = 0.05 + 0.02 * sin(time * 10);
 
@@ -104,11 +104,13 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
         const double posX = LInterp(lerp, posMinX, posMaxX);
         const double posY = LInterp(lerp, posMinY, posMaxY);
 
-        playerShape.setPoint(0, sf::Vector2f( posX, posY ) );
-        playerShape.setPoint(1, sf::Vector2f( posX + 0.1, posY ) );
-        playerShape.setPoint(2, sf::Vector2f( posX + 0.1, posY + 0.1 ) );
-        playerShape.setPoint(3, sf::Vector2f( posX, posY + 0.1 ) );
+        playerShape.setPoint(0, sf::Vector2f( -0.10, -0.05 ) );
+        playerShape.setPoint(1, sf::Vector2f( 0, 0 ) );
+        playerShape.setPoint(2, sf::Vector2f( -0.10, 0.05 ) );
         playerShape.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
+        playerShape.setPosition(posX,posY);
+        playerShape.setRotation(pos * 360 / numSides);
+
         rt->draw(playerShape);
     }
 

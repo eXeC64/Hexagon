@@ -11,12 +11,6 @@ blog on the subject. It was fun to write, and it's fun to poke at.
 
 Known Issues
 ------------
- * Player collision is visually inaccurate - The player is positioned on the
-edge of a circle instead of a hexagon so they appear to be father out than
-they really are. This shouldn't be very difficult to correct, just take the
-corners of the hexagon and do linear interpolation along a side to find
-where the tip of player's arrow should be, then you can position the base
-towards the world's origin.
  * Obstacles are not spawned in fun patterns - The game is boring, and unless
 meaningful and interesting patterns of obstacles are created it will remain
 boring, no matter how much you 'juice' it.
