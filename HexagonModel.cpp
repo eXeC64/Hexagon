@@ -8,7 +8,7 @@ HexagonModel::HexagonModel(const int maxSides) : m_maxSides(maxSides)
     m_gameSpeed = 1.0;
 
     m_playerPosition = 0.5;
-    m_playerSpeed = 5;
+    m_playerSpeed = 0.9;
     m_playerDirection = 0;
 
     m_curDistance = 0;
@@ -59,7 +59,7 @@ void HexagonModel::Simulate(const double dt)
 void HexagonModel::Tick(const double dt)
 {
     //Move player sideways
-    double newPlayerPos = (m_playerPosition + m_playerDirection * m_playerSpeed * dt);
+    double newPlayerPos = (m_playerPosition + m_playerDirection * m_playerSpeed * m_numSides* dt);
 
     while(newPlayerPos >= m_numSides) {
         newPlayerPos -= m_numSides;
