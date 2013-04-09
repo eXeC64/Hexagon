@@ -88,7 +88,6 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
     {
         sf::ConvexShape playerShape(3);
         const double pos = m_model->GetPlayerPosition();
-        const double scale = 0.05 + 0.02 * sin(time * 10);
 
         //Get the two corners the player is between
         const int posMin = floor(pos);
@@ -104,9 +103,11 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
         const double posX = LInterp(lerp, posMinX, posMaxX);
         const double posY = LInterp(lerp, posMinY, posMaxY);
 
-        playerShape.setPoint(0, sf::Vector2f( -0.10, -0.05 ) );
+        const double pulseScale = 0.05 + 0.01 * sin(time * 10);
+
+        playerShape.setPoint(0, sf::Vector2f( -0.10, -pulseScale ) );
         playerShape.setPoint(1, sf::Vector2f( 0, 0 ) );
-        playerShape.setPoint(2, sf::Vector2f( -0.10, 0.05 ) );
+        playerShape.setPoint(2, sf::Vector2f( -0.10, pulseScale ) );
         playerShape.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
         playerShape.setPosition(posX,posY);
         playerShape.setRotation(pos * 360 / numSides);
