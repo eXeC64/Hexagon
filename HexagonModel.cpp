@@ -160,10 +160,10 @@ void HexagonModel::SetNumSides(const int numSides)
 {
     if(numSides >= m_maxSides) {
         m_numSides = m_maxSides;
-    } else if(numSides >= 3) {
+    } else if(numSides >= 4) {
         m_numSides = numSides;
     } else {
-        m_numSides = 3;
+        m_numSides = 4;
     }
 }
 
