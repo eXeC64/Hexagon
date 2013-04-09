@@ -50,8 +50,7 @@ void HexagonModel::Simulate(const double dt)
 
     const double tickSize = 1/100.0;
 
-    while(!IsGameOver() && m_timeDue >= tickSize)
-    {
+    while(!IsGameOver() && m_timeDue >= tickSize) {
         Tick(tickSize * m_gameSpeed);
         m_timeDue -= tickSize;
         m_curTime += tickSize * m_gameSpeed;
