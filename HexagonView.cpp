@@ -33,7 +33,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
 
     const double    time = m_model->GetTime();
     const double    hexagonRadius = 1.0;
-    const double    playerRadius = 1.3;
+    const double    playerRadius = 1.4;
     const int       numSides = m_model->GetNumSides();
 
 

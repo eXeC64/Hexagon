@@ -8,7 +8,7 @@ HexagonModel::HexagonModel(const int maxSides) : m_maxSides(maxSides)
     m_gameSpeed = 1.0;
 
     m_playerPosition = 0.5;
-    m_playerSpeed = 6;
+    m_playerSpeed = 5;
     m_playerDirection = 0;
 
     m_curDistance = 0;
