@@ -5,6 +5,7 @@
 
 sf::Color HSVtoRGB(const double h, const double s, const double v);
 void ConstructSideShape(sf::ConvexShape &shape, const int side, const int numSides, const double in, const double out);
+const double LInterp(const double pos, const double min, const double max);
 
 HexagonView::HexagonView()
 {
@@ -85,15 +86,28 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
 
     //Draw player
     {
-        sf::ConvexShape playerShape(3);
+        sf::ConvexShape playerShape(4);
         const double pos = m_model->GetPlayerPosition();
         const double scale = 0.05 + 0.02 * sin(time * 10);
-        playerShape.setPoint(0, sf::Vector2f(   (playerRadius - 0.15) * cos( ((pos-scale)*2*M_PI)/numSides ),
-                                                (playerRadius - 0.15) * sin( ((pos-scale)*2*M_PI)/numSides )));
-        playerShape.setPoint(1, sf::Vector2f(   (playerRadius - 0.0) * cos( (pos*2*M_PI)/numSides ),
-                                                (playerRadius - 0.0) * sin( (pos*2*M_PI)/numSides )));
-        playerShape.setPoint(2, sf::Vector2f(   (playerRadius - 0.15) * cos( ((pos+scale)*2*M_PI)/numSides ),
-                                                (playerRadius - 0.15) * sin( ((pos+scale)*2*M_PI)/numSides )));
+
+        //Get the two corners the player is between
+        const int posMin = floor(pos);
+        const int posMax = ceil(pos);
+
+        const double posMinX = playerRadius * cos(posMin * 2 * M_PI / numSides);
+        const double posMinY = playerRadius * sin(posMin * 2 * M_PI / numSides);
+        const double posMaxX = playerRadius * cos(posMax * 2 * M_PI / numSides);
+        const double posMaxY = playerRadius * sin(posMax * 2 * M_PI / numSides);
+
+        const double lerp = pos - posMin;
+
+        const double posX = LInterp(lerp, posMinX, posMaxX);
+        const double posY = LInterp(lerp, posMinY, posMaxY);
+
+        playerShape.setPoint(0, sf::Vector2f( posX, posY ) );
+        playerShape.setPoint(1, sf::Vector2f( posX + 0.1, posY ) );
+        playerShape.setPoint(2, sf::Vector2f( posX + 0.1, posY + 0.1 ) );
+        playerShape.setPoint(3, sf::Vector2f( posX, posY + 0.1 ) );
         playerShape.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
         rt->draw(playerShape);
     }
@@ -182,3 +196,13 @@ void ConstructSideShape(sf::ConvexShape &shape, const int side, const int numSid
                                    in * sin( ((side+1)*2*M_PI)/numSides )));
 }
 
+const double LInterp(const double pos, const double min, const double max)
+{
+    if(pos <= 0) {
+        return min;
+    } else if(pos >= 1) {
+        return max;
+    } else {
+        return min + (max - min) * pos;
+    }
+}
