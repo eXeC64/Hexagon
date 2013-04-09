@@ -46,7 +46,7 @@ void HexagonModel::Simulate(const double dt)
 {
     m_timeDue += dt;
 
-    const double tickSize = 1/60.0;
+    const double tickSize = 1/100.0;
 
     while(!IsGameOver() && m_timeDue >= tickSize)
     {
