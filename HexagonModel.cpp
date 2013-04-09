@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "Util.hpp"
+
 HexagonModel::HexagonModel(const int maxSides) : m_maxSides(maxSides)
 {
     m_gameSpeed = 1.0;
@@ -59,15 +61,8 @@ void HexagonModel::Simulate(const double dt)
 void HexagonModel::Tick(const double dt)
 {
     //Move player sideways
-    double newPlayerPos = (m_playerPosition + m_playerDirection * m_playerSpeed * m_numSides* dt);
-
-    while(newPlayerPos >= m_numSides) {
-        newPlayerPos -= m_numSides;
-    }
-
-    while(newPlayerPos < 0) {
-        newPlayerPos += m_numSides;
-    }
+    const double playerPosDelta = (m_playerDirection * m_playerSpeed * m_numSides * dt);
+    const double newPlayerPos = Cycle(m_playerPosition + playerPosDelta, 0, m_numSides);
 
     if(!WillCollide(newPlayerPos)) {
         m_playerPosition = newPlayerPos;
@@ -158,13 +153,7 @@ void HexagonModel::SetGameSpeed(const double speed)
 
 void HexagonModel::SetNumSides(const int numSides)
 {
-    if(numSides >= m_maxSides) {
-        m_numSides = m_maxSides;
-    } else if(numSides >= 4) {
-        m_numSides = numSides;
-    } else {
-        m_numSides = 4;
-    }
+    m_numSides = Clamp(numSides, 4, m_maxSides);
 }
 
 Obstacle* HexagonModel::GetObstacle(const int side) const
