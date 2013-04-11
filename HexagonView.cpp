@@ -108,11 +108,11 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
         const double posX = LInterp(lerp, posMinX, posMaxX);
         const double posY = LInterp(lerp, posMinY, posMaxY);
 
-        const double pulseScale = 0.05 + 0.01 * sin(time * 10);
+        const double pulseScale = 0.1 + 0.025 * sin(time * 10);
 
-        playerShape.setPoint(0, sf::Vector2f( -0.10, -pulseScale ) );
+        playerShape.setPoint(0, sf::Vector2f( -0.20, -pulseScale ) );
         playerShape.setPoint(1, sf::Vector2f( 0, 0 ) );
-        playerShape.setPoint(2, sf::Vector2f( -0.10, pulseScale ) );
+        playerShape.setPoint(2, sf::Vector2f( -0.20, pulseScale ) );
         playerShape.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
         playerShape.setPosition(posX,posY);
         playerShape.setRotation(pos * 360 / numSides);
