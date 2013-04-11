@@ -120,7 +120,7 @@ void HexagonModel::AddObstacle(const int side, const double start, const double 
 
 void HexagonModel::AddPattern()
 {
-    const double base = m_obsDistance + 3;
+    const double base = m_obsDistance + 2;
 
     //Direction to spin the pattern in
     const int direction = rand() % 2;
