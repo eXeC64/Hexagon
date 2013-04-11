@@ -75,3 +75,8 @@ const double Cycle(const double val, const double min, const double max)
     }
     return i;
 }
+
+const double Max(const double a, const double b)
+{
+    return a > b ? a : b;
+}
