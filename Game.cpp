@@ -70,19 +70,25 @@ void Game::Run()
         {
             int dir = 0;
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+               sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
                 dir += 1;
+            }
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+               sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
                 dir -= 1;
+            }
 
             m_model->SetPlayerDirection(dir);
         }
 
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+           sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             m_model->SetGameSpeed(2.0);
-        } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+                  sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
             m_model->SetGameSpeed(0.2);
         } else {
             m_model->SetGameSpeed(1.0);
