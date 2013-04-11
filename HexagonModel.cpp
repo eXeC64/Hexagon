@@ -153,7 +153,7 @@ void HexagonModel::AddPattern()
                 //Construct the hexagon
                 for(int s = 0; s < 6; ++s) {
                     if(s != side) {
-                        AddObstacle(s, base + i * 3, 0.5);
+                        AddObstacle(s, 1 + base + i * 3, 0.5);
                     }
                 }
             }
@@ -202,7 +202,7 @@ void HexagonModel::AddPattern()
 
         } else if(pattern == 4) {
             //Braces
-            const int iterations = 15 + rand() % 10;
+            const int iterations = 1 + rand() % 20;
             for(int i = 0; i < iterations; ++i) {
                 int mod = i % 3;
 
