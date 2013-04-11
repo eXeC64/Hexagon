@@ -19,6 +19,7 @@ public:
     const double    GetPlayerDistance()                         const;
     const double    GetTime()                                   const;
     const bool      IsGameOver()                                const;
+    const double    GetRotation()                               const;
 
 private:
     void            Tick(const double dt);
@@ -37,6 +38,10 @@ private:
     double          m_obsDistance;      //Distance to end of last obstacle
     double          m_obsSpeed;         //Speed obstacles approach at
     double          m_timeDue;          //Time left to simulate 
+
+    double          m_rotation;
+    double          m_rotationSpeed;
+    double          m_nextRotationSpeedChange;
 
     bool            m_gameOver;
     int             m_playerDirection;

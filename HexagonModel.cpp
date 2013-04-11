@@ -20,6 +20,10 @@ HexagonModel::HexagonModel(const int maxSides) : m_maxSides(maxSides)
     m_curTime = 0;
     m_timeDue = 0;
 
+    m_rotation = 0;
+    m_rotationSpeed = 0;
+    m_nextRotationSpeedChange = 0;
+
     m_gameOver = false;
 
     m_numSides = 6;
@@ -61,6 +65,18 @@ void HexagonModel::Simulate(const double dt)
 
 void HexagonModel::Tick(const double dt)
 {
+    //Rotate game
+    if(m_curTime >= m_nextRotationSpeedChange) {
+        m_nextRotationSpeedChange = m_curTime + 5 + rand() % 10;
+        m_rotationSpeed = 60 + rand() % 60;
+        if(rand() % 2) {
+            m_rotationSpeed = -m_rotationSpeed;
+        }
+    }
+
+    m_rotation += m_rotationSpeed * dt;
+
+
     //Move player sideways
     const double playerPosDelta = (m_playerDirection * m_playerSpeed * m_numSides * dt);
     const double newPlayerPos = Cycle(m_playerPosition + playerPosDelta, 0, m_numSides);
@@ -305,3 +321,7 @@ const bool HexagonModel::IsGameOver() const
     return m_gameOver;
 }
 
+const double HexagonModel::GetRotation() const
+{
+    return m_rotation;
+}
