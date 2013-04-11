@@ -24,6 +24,8 @@ HexagonModel::HexagonModel(const int maxSides) : m_maxSides(maxSides)
 
     m_numSides = 6;
 
+    m_lastPattern = -1;
+
     m_obstacles = new Obstacle*[m_maxSides];
 
     for(int i = 0; i < m_maxSides; ++i) {
@@ -121,7 +123,14 @@ void HexagonModel::AddPattern()
     const double base = m_obsDistance;
 
     if(m_numSides == 6) {
-        const int pattern = rand() % 6;
+
+        //Never repeat the same pattern consecutively
+        int pattern = m_lastPattern;
+        while(pattern == m_lastPattern) {
+            pattern = rand() % 6;
+        }
+        m_lastPattern = pattern;
+
         switch(pattern) {
         case 0:
             //Opposite hexagons

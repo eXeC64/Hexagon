@@ -44,6 +44,8 @@ private:
     const int       m_maxSides;
     int             m_numSides;
 
+    int             m_lastPattern;
+
     Obstacle**      m_obstacles;
 
 };
