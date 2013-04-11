@@ -120,149 +120,113 @@ void HexagonModel::AddObstacle(const int side, const double start, const double 
 
 void HexagonModel::AddPattern()
 {
-    const double base = m_obsDistance;
+    const double base = m_obsDistance + 3;
+
+    //Direction to spin the pattern in
+    const int direction = rand() % 2;
 
     if(m_numSides == 6) {
 
         //Never repeat the same pattern consecutively
         int pattern = m_lastPattern;
         while(pattern == m_lastPattern) {
-            pattern = rand() % 6;
+            pattern = rand() % 5;
         }
         m_lastPattern = pattern;
 
-        switch(pattern) {
-        case 0:
+        if(pattern == 0) {
+
             //Opposite hexagons
-            for(int i = base + 3; i < base + 24; i += 8) {
-                AddObstacle(0, i, 0.5);
-                AddObstacle(1, i, 0.5);
-                AddObstacle(2, i, 0.5);
-                AddObstacle(3, i, 0.5);
-                AddObstacle(4, i, 0.5);
+            const int iterations = 1 + rand() % 5;
+            int lastSide = -1;
 
-                AddObstacle(0, i + 4, 0.5);
-                AddObstacle(1, i + 4, 0.5);
-                AddObstacle(3, i + 4, 0.5);
-                AddObstacle(4, i + 4, 0.5);
-                AddObstacle(5, i + 4, 0.5);
+            //Add each hexagon
+            for(int i = 0; i < iterations; ++i) {
+
+                //Never put the gap on the same side consecutively
+                int side = lastSide;
+                while(side == lastSide) {
+                    side = rand() % 6;
+                }
+                lastSide = side;
+
+                //Construct the hexagon
+                for(int s = 0; s < 6; ++s) {
+                    if(s != side) {
+                        AddObstacle(s, base + i * 3, 0.5);
+                    }
+                }
             }
-            break;
-        case 1:
+
+        } else if(pattern == 1) {
             //Spiral
-            AddObstacle(0, base + 3, 1);
-            AddObstacle(1, base + 4, 1);
-            AddObstacle(2, base + 5, 1);
-            AddObstacle(3, base + 6, 1);
-            AddObstacle(4, base + 7, 1);
-            AddObstacle(5, base + 8, 1);
+            const int size = 12 + rand() % 6;
+            for(int i = 0; i < size; ++i) {
+                AddObstacle(Twist(direction, i % 6, m_numSides), base + i, 1);
+            }
 
-            AddObstacle(0, base + 9, 1);
-            AddObstacle(1, base + 10, 1);
-            AddObstacle(2, base + 11, 1);
-            AddObstacle(3, base + 12, 1);
-            AddObstacle(4, base + 13, 1);
-            AddObstacle(5, base + 14, 1);
-
-            AddObstacle(0, base + 15, 1);
-            AddObstacle(1, base + 16, 1);
-            AddObstacle(2, base + 17, 1);
-            AddObstacle(3, base + 18, 1);
-            AddObstacle(4, base + 19, 1);
-            AddObstacle(5, base + 20, 1);
-            break;
-        case 2:
+        } else if(pattern == 2) {
             //Bullet hell
 
-            for(int i = base + 3; i < base + 27; i += 9) {
-                AddObstacle(0, i + 1.0, 0.5);
-                AddObstacle(1, i + 3.5, 0.5);
-                AddObstacle(2, i + 1.0, 0.5);
-                AddObstacle(3, i + 3.5, 0.5);
-                AddObstacle(4, i + 1.0, 0.5);
-                AddObstacle(5, i + 3.5, 0.5);
+            const int iterations = 1 + rand() % 20;
 
-                AddObstacle(0, i + 5.5, 0.5);
-                AddObstacle(1, i + 8.0, 0.5);
-                AddObstacle(2, i + 5.5, 0.5);
-                AddObstacle(3, i + 8.0, 0.5);
-                AddObstacle(4, i + 5.5, 0.5);
-                AddObstacle(5, i + 8.0, 0.5);
+            for(int i = 0; i < iterations; ++i) {
+
+                for(int s = 0; s < 6; ++s) {
+                    if((i + s) % 2) {
+                        AddObstacle(s, base + i * 2, 0.5);
+                    }
+                }
+
+            }
+        } else if(pattern == 3) {
+
+            //Oscilating spiral
+            const int iterations = 2 + rand() % 2;
+
+            for(int i = 0; i < iterations; ++i ) {
+
+                AddObstacle(1, base + i * 10, 1);
+                AddObstacle(2, base + i * 10, 1);
+                AddObstacle(3, base + i * 10, 1);
+                AddObstacle(4, base + i * 10, 1);
+
+                AddObstacle(0, base + i * 10 + 5, 1);
+                AddObstacle(1, base + i * 10 + 5, 1);
+                AddObstacle(2, base + i * 10 + 5, 1);
+                AddObstacle(3, base + i * 10 + 5, 1);
+
+                AddObstacle(5, base + i * 10, 10);
             }
 
-            break;
-        case 3:
-            //0    ####################
-            //1 #   ######      ######   #
-            //2 ##   ####   ##   ####   ##
-            //3 ###   ##   ####   ##   ###
-            //4 ####      ######      ####
-            //5 ##########################
-            AddObstacle(0, base + 6, 20);
 
-            AddObstacle(1, base + 3, 1);
-            AddObstacle(1, base + 7, 5);
-            AddObstacle(1, base + 19, 5);
-            AddObstacle(1, base + 28, 1);
+        } else if(pattern == 4) {
+            //Braces
+            const int iterations = 15 + rand() % 10;
+            for(int i = 0; i < iterations; ++i) {
+                int mod = i % 3;
 
-            AddObstacle(2, base + 3, 2);
-            AddObstacle(2, base + 8, 4);
-            AddObstacle(2, base + 15, 2);
-            AddObstacle(2, base + 20, 4);
-            AddObstacle(2, base + 27, 2);
+                if(direction) {
+                    mod = 2 - mod;
+                }
 
-            AddObstacle(3, base + 3, 3);
-            AddObstacle(3, base + 9, 2);
-            AddObstacle(3, base + 14, 4);
-            AddObstacle(3, base + 21, 1);
-            AddObstacle(3, base + 26, 3);
-
-            AddObstacle(4, base + 3, 4);
-            AddObstacle(4, base + 13, 6);
-            AddObstacle(4, base + 25, 4);
-
-            AddObstacle(5, base + 3, 26);
-            break;
-        case 4:
-            //Spiralling hexagons
-            AddObstacle(0, base + 3, 0.5);
-            AddObstacle(1, base + 3, 0.5);
-            AddObstacle(2, base + 3, 0.5);
-            AddObstacle(3, base + 3, 0.5);
-            AddObstacle(4, base + 3, 0.5);
-
-            AddObstacle(0, base + 6, 0.5);
-            AddObstacle(1, base + 6, 0.5);
-            AddObstacle(2, base + 6, 0.5);
-            AddObstacle(3, base + 6, 0.5);
-            AddObstacle(5, base + 6, 0.5);
-
-            AddObstacle(0, base + 9, 0.5);
-            AddObstacle(1, base + 9, 0.5);
-            AddObstacle(2, base + 9, 0.5);
-            AddObstacle(4, base + 9, 0.5);
-            AddObstacle(5, base + 9, 0.5);
-
-            AddObstacle(0, base + 12, 0.5);
-            AddObstacle(1, base + 12, 0.5);
-            AddObstacle(3, base + 12, 0.5);
-            AddObstacle(4, base + 12, 0.5);
-            AddObstacle(5, base + 12, 0.5);
-            break;
-
-        case 5:
-            for(int i = base + 3; i < base + 15; i += 4) {
-                AddObstacle(0, i, 0.5);
-                AddObstacle(1, i, 0.5);
-                AddObstacle(3, i, 0.5);
-                AddObstacle(4, i, 0.5);
-
-                AddObstacle(1, i + 2, 0.5);
-                AddObstacle(2, i + 2, 0.5);
-                AddObstacle(4, i + 2, 0.5);
-                AddObstacle(5, i + 2, 0.5);
+                if(mod == 0) {
+                    AddObstacle(0, base + i * 2, 0.5);
+                    AddObstacle(1, base + i * 2, 0.5);
+                    AddObstacle(3, base + i * 2, 0.5);
+                    AddObstacle(4, base + i * 2, 0.5);
+                } else if(mod == 1) {
+                    AddObstacle(1, base + i * 2, 0.5);
+                    AddObstacle(2, base + i * 2, 0.5);
+                    AddObstacle(4, base + i * 2, 0.5);
+                    AddObstacle(5, base + i * 2, 0.5);
+                } else if(mod == 2) {
+                    AddObstacle(2, base + i * 2, 0.5);
+                    AddObstacle(3, base + i * 2, 0.5);
+                    AddObstacle(5, base + i * 2, 0.5);
+                    AddObstacle(0, base + i * 2, 0.5);
+                }
             }
-            break;
         }
     } else {
         const int side = rand() % m_numSides;
