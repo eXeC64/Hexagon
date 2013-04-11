@@ -88,14 +88,12 @@ void HexagonModel::Tick(const double dt)
 
     //Add new obstacles if needed
     while(m_obsDistance - m_curDistance < 10) {
-        AddObstacle();
+        AddPattern();
     }
 }
 
-void HexagonModel::AddObstacle()
+void HexagonModel::AddObstacle(const int side, const double start, const double end)
 {
-    const int side = rand() % m_numSides;
-    
     Obstacle* obs = GetObstacle(side);
     Obstacle* lastObs = 0;
 
@@ -105,8 +103,8 @@ void HexagonModel::AddObstacle()
     }
 
     Obstacle* newObs = new Obstacle;
-    newObs->start = m_obsDistance;
-    newObs->end = m_obsDistance + 0.5;
+    newObs->start = start;
+    newObs->end = end;
     newObs->next = 0;
 
     if(lastObs) {
@@ -115,7 +113,15 @@ void HexagonModel::AddObstacle()
         m_obstacles[side] = newObs;
     }
 
-    m_obsDistance += 1 + rand() % 2;
+    m_obsDistance = Max(m_obsDistance, end);
+}
+
+void HexagonModel::AddPattern()
+{
+    const int side = rand() % m_numSides;
+    AddObstacle(side, m_obsDistance + 1, m_obsDistance + 1.5);
+    
+
 }
 
 const bool HexagonModel::WillCollide(const double position) const
