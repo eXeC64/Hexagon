@@ -121,22 +121,26 @@ void HexagonModel::AddPattern()
     const double base = m_obsDistance;
 
     if(m_numSides == 6) {
-        const int pattern = rand() % 3;
+        const int pattern = rand() % 6;
         switch(pattern) {
         case 0:
-            AddObstacle(0, base + 3, 0.5);
-            AddObstacle(1, base + 3, 0.5);
-            AddObstacle(2, base + 3, 0.5);
-            AddObstacle(3, base + 3, 0.5);
-            AddObstacle(4, base + 3, 0.5);
+            //Opposite hexagons
+            for(int i = base + 3; i < base + 24; i += 8) {
+                AddObstacle(0, i, 0.5);
+                AddObstacle(1, i, 0.5);
+                AddObstacle(2, i, 0.5);
+                AddObstacle(3, i, 0.5);
+                AddObstacle(4, i, 0.5);
 
-            AddObstacle(0, base + 6, 0.5);
-            AddObstacle(1, base + 6, 0.5);
-            AddObstacle(3, base + 6, 0.5);
-            AddObstacle(4, base + 6, 0.5);
-            AddObstacle(5, base + 6, 0.5);
+                AddObstacle(0, i + 4, 0.5);
+                AddObstacle(1, i + 4, 0.5);
+                AddObstacle(3, i + 4, 0.5);
+                AddObstacle(4, i + 4, 0.5);
+                AddObstacle(5, i + 4, 0.5);
+            }
             break;
         case 1:
+            //Spiral
             AddObstacle(0, base + 3, 1);
             AddObstacle(1, base + 4, 1);
             AddObstacle(2, base + 5, 1);
@@ -159,26 +163,96 @@ void HexagonModel::AddPattern()
             AddObstacle(5, base + 20, 1);
             break;
         case 2:
-            AddObstacle(0, base + 1.0, 1);
-            AddObstacle(1, base + 3.5, 1);
-            AddObstacle(2, base + 1.0, 1);
-            AddObstacle(3, base + 3.5, 1);
-            AddObstacle(4, base + 1.0, 1);
-            AddObstacle(5, base + 3.5, 1);
+            //Bullet hell
 
-            AddObstacle(0, base + 5.5, 1);
-            AddObstacle(1, base + 8.0, 1);
-            AddObstacle(2, base + 5.5, 1);
-            AddObstacle(3, base + 8.0, 1);
-            AddObstacle(4, base + 5.5, 1);
-            AddObstacle(5, base + 8.0, 1);
+            for(int i = base + 3; i < base + 27; i += 9) {
+                AddObstacle(0, i + 1.0, 0.5);
+                AddObstacle(1, i + 3.5, 0.5);
+                AddObstacle(2, i + 1.0, 0.5);
+                AddObstacle(3, i + 3.5, 0.5);
+                AddObstacle(4, i + 1.0, 0.5);
+                AddObstacle(5, i + 3.5, 0.5);
 
-            AddObstacle(0, base + 10.5, 1);
-            AddObstacle(1, base + 13.0, 1);
-            AddObstacle(2, base + 10.5, 1);
-            AddObstacle(3, base + 13.0, 1);
-            AddObstacle(4, base + 10.5, 1);
-            AddObstacle(5, base + 13.0, 1);
+                AddObstacle(0, i + 5.5, 0.5);
+                AddObstacle(1, i + 8.0, 0.5);
+                AddObstacle(2, i + 5.5, 0.5);
+                AddObstacle(3, i + 8.0, 0.5);
+                AddObstacle(4, i + 5.5, 0.5);
+                AddObstacle(5, i + 8.0, 0.5);
+            }
+
+            break;
+        case 3:
+            //0    ####################
+            //1 #   ######      ######   #
+            //2 ##   ####   ##   ####   ##
+            //3 ###   ##   ####   ##   ###
+            //4 ####      ######      ####
+            //5 ##########################
+            AddObstacle(0, base + 6, 20);
+
+            AddObstacle(1, base + 3, 1);
+            AddObstacle(1, base + 7, 5);
+            AddObstacle(1, base + 19, 5);
+            AddObstacle(1, base + 28, 1);
+
+            AddObstacle(2, base + 3, 2);
+            AddObstacle(2, base + 8, 4);
+            AddObstacle(2, base + 15, 2);
+            AddObstacle(2, base + 20, 4);
+            AddObstacle(2, base + 27, 2);
+
+            AddObstacle(3, base + 3, 3);
+            AddObstacle(3, base + 9, 2);
+            AddObstacle(3, base + 14, 4);
+            AddObstacle(3, base + 21, 1);
+            AddObstacle(3, base + 26, 3);
+
+            AddObstacle(4, base + 3, 4);
+            AddObstacle(4, base + 13, 6);
+            AddObstacle(4, base + 25, 4);
+
+            AddObstacle(5, base + 3, 26);
+            break;
+        case 4:
+            //Spiralling hexagons
+            AddObstacle(0, base + 3, 0.5);
+            AddObstacle(1, base + 3, 0.5);
+            AddObstacle(2, base + 3, 0.5);
+            AddObstacle(3, base + 3, 0.5);
+            AddObstacle(4, base + 3, 0.5);
+
+            AddObstacle(0, base + 6, 0.5);
+            AddObstacle(1, base + 6, 0.5);
+            AddObstacle(2, base + 6, 0.5);
+            AddObstacle(3, base + 6, 0.5);
+            AddObstacle(5, base + 6, 0.5);
+
+            AddObstacle(0, base + 9, 0.5);
+            AddObstacle(1, base + 9, 0.5);
+            AddObstacle(2, base + 9, 0.5);
+            AddObstacle(4, base + 9, 0.5);
+            AddObstacle(5, base + 9, 0.5);
+
+            AddObstacle(0, base + 12, 0.5);
+            AddObstacle(1, base + 12, 0.5);
+            AddObstacle(3, base + 12, 0.5);
+            AddObstacle(4, base + 12, 0.5);
+            AddObstacle(5, base + 12, 0.5);
+            break;
+
+        case 5:
+            for(int i = base + 3; i < base + 15; i += 4) {
+                AddObstacle(0, i, 0.5);
+                AddObstacle(1, i, 0.5);
+                AddObstacle(3, i, 0.5);
+                AddObstacle(4, i, 0.5);
+
+                AddObstacle(1, i + 2, 0.5);
+                AddObstacle(2, i + 2, 0.5);
+                AddObstacle(4, i + 2, 0.5);
+                AddObstacle(5, i + 2, 0.5);
+            }
             break;
         }
     } else {
