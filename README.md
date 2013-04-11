@@ -11,9 +11,6 @@ blog on the subject. It was fun to write, and it's fun to poke at.
 
 Known Issues
 ------------
- * Obstacles are not spawned in fun patterns - The game is boring, and unless
-meaningful and interesting patterns of obstacles are created it will remain
-boring, no matter how much you 'juice' it.
  * No music - Funnily enough you can generate the start of one of SuperHexagon's
 songs with a few lines of C. If I could remember the snippet I'd just use that
 and loop it, until then the game is silent.
