@@ -124,7 +124,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
 
     rt->setView(rt->getDefaultView());
     timeText.setPosition(0,0);
-    timeText.setCharacterSize(30);
+    timeText.setCharacterSize(20);
     rt->draw(timeText);
 
 }
