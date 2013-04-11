@@ -47,8 +47,12 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
     sf::ConvexShape bgSide(4);
     for(int i = 0; i < numSides; ++i) {
         bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
-        const double in = hexagonRadius - 0.1 + 0.05 * sin(time);
+        const double in = hexagonRadius - 0.1 + 0.05 * sin(time * 5);
         ConstructSideShape(bgSide, i, numSides, in, hexagonRadius);
+        rt->draw(bgSide);
+
+        bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.3));
+        ConstructSideShape(bgSide, i, numSides, 0, in);
         rt->draw(bgSide);
 
         if(i % 2) {
