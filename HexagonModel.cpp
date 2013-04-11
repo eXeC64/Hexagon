@@ -92,7 +92,7 @@ void HexagonModel::Tick(const double dt)
     }
 }
 
-void HexagonModel::AddObstacle(const int side, const double start, const double end)
+void HexagonModel::AddObstacle(const int side, const double start, const double length)
 {
     Obstacle* obs = GetObstacle(side);
     Obstacle* lastObs = 0;
@@ -104,7 +104,7 @@ void HexagonModel::AddObstacle(const int side, const double start, const double 
 
     Obstacle* newObs = new Obstacle;
     newObs->start = start;
-    newObs->end = end;
+    newObs->end = start + length;
     newObs->next = 0;
 
     if(lastObs) {
@@ -113,14 +113,78 @@ void HexagonModel::AddObstacle(const int side, const double start, const double 
         m_obstacles[side] = newObs;
     }
 
-    m_obsDistance = Max(m_obsDistance, end);
+    m_obsDistance = Max(m_obsDistance, start + length);
 }
 
 void HexagonModel::AddPattern()
 {
-    const int side = rand() % m_numSides;
-    AddObstacle(side, m_obsDistance + 1, m_obsDistance + 1.5);
-    
+    const double base = m_obsDistance;
+
+    if(m_numSides == 6) {
+        const int pattern = rand() % 3;
+        switch(pattern) {
+        case 0:
+            AddObstacle(0, base + 3, 0.5);
+            AddObstacle(1, base + 3, 0.5);
+            AddObstacle(2, base + 3, 0.5);
+            AddObstacle(3, base + 3, 0.5);
+            AddObstacle(4, base + 3, 0.5);
+
+            AddObstacle(0, base + 6, 0.5);
+            AddObstacle(1, base + 6, 0.5);
+            AddObstacle(3, base + 6, 0.5);
+            AddObstacle(4, base + 6, 0.5);
+            AddObstacle(5, base + 6, 0.5);
+            break;
+        case 1:
+            AddObstacle(0, base + 3, 1);
+            AddObstacle(1, base + 4, 1);
+            AddObstacle(2, base + 5, 1);
+            AddObstacle(3, base + 6, 1);
+            AddObstacle(4, base + 7, 1);
+            AddObstacle(5, base + 8, 1);
+
+            AddObstacle(0, base + 9, 1);
+            AddObstacle(1, base + 10, 1);
+            AddObstacle(2, base + 11, 1);
+            AddObstacle(3, base + 12, 1);
+            AddObstacle(4, base + 13, 1);
+            AddObstacle(5, base + 14, 1);
+
+            AddObstacle(0, base + 15, 1);
+            AddObstacle(1, base + 16, 1);
+            AddObstacle(2, base + 17, 1);
+            AddObstacle(3, base + 18, 1);
+            AddObstacle(4, base + 19, 1);
+            AddObstacle(5, base + 20, 1);
+            break;
+        case 2:
+            AddObstacle(0, base + 1.0, 1);
+            AddObstacle(1, base + 3.5, 1);
+            AddObstacle(2, base + 1.0, 1);
+            AddObstacle(3, base + 3.5, 1);
+            AddObstacle(4, base + 1.0, 1);
+            AddObstacle(5, base + 3.5, 1);
+
+            AddObstacle(0, base + 5.5, 1);
+            AddObstacle(1, base + 8.0, 1);
+            AddObstacle(2, base + 5.5, 1);
+            AddObstacle(3, base + 8.0, 1);
+            AddObstacle(4, base + 5.5, 1);
+            AddObstacle(5, base + 8.0, 1);
+
+            AddObstacle(0, base + 10.5, 1);
+            AddObstacle(1, base + 13.0, 1);
+            AddObstacle(2, base + 10.5, 1);
+            AddObstacle(3, base + 13.0, 1);
+            AddObstacle(4, base + 10.5, 1);
+            AddObstacle(5, base + 13.0, 1);
+            break;
+        }
+    } else {
+        const int side = rand() % m_numSides;
+        AddObstacle(side, m_obsDistance + 1, m_obsDistance + 1.5);
+    }
 
 }
 

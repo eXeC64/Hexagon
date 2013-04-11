@@ -22,7 +22,7 @@ public:
 
 private:
     void            Tick(const double dt);
-    void            AddObstacle(const int side, const double start, const double end);
+    void            AddObstacle(const int side, const double start, const double length);
     void            AddPattern();
 
     const bool      WillCollide(const double position)          const;
