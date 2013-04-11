@@ -80,3 +80,10 @@ const double Max(const double a, const double b)
 {
     return a > b ? a : b;
 }
+
+const int Twist(const int direction, const int side, const int numSides)
+{
+    const int mult = direction ? 1 : -1;
+    return abs(6 + mult * side) % numSides;
+}
+
