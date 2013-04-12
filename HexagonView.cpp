@@ -122,18 +122,6 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
 
         rt->draw(playerShape);
     }
-
-    //Draw time
-    char timeStr[256];
-    sprintf(timeStr, "%05.2f", time);
-
-    sf::Text timeText(timeStr);
-
-    rt->setView(rt->getDefaultView());
-    timeText.setPosition(450,240);
-    timeText.setCharacterSize(20);
-    rt->draw(timeText);
-
 }
 
 const double HexagonView::Hue() const
