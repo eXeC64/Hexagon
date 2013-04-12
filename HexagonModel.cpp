@@ -82,9 +82,9 @@ void HexagonModel::Tick(const double dt)
     const double playerPosDelta = (m_playerDirection * m_playerSpeed * m_numSides * dt);
     const double newPlayerPos = Cycle(m_playerPosition + playerPosDelta, 0, m_numSides);
 
-    //if(!WillCollide(newPlayerPos)) {
+    if(!WillCollide(newPlayerPos)) {
         m_playerPosition = newPlayerPos;
-    //}
+    }
 
 
     //Move forward
