@@ -146,7 +146,7 @@ void HexagonModel::AddPattern()
         //Never repeat the same pattern consecutively
         int pattern = m_lastPattern;
         while(pattern == m_lastPattern) {
-            pattern = rand() % 5;
+            pattern = rand() % 7;
         }
         m_lastPattern = pattern;
 
@@ -243,6 +243,54 @@ void HexagonModel::AddPattern()
                     AddObstacle(0, base + i * 2, 0.5);
                 }
             }
+        } else if(pattern == 5) {
+            //0 #######
+            //1 #
+            //2    #
+            //3   ###
+            //4    #
+            //5 #
+            //6 #######
+
+            const int iterations = 2 + rand() % 3;
+            for(int i = 0; i < iterations; ++i) {
+                AddObstacle(0, base + i * 7, 7);
+                AddObstacle(1, base + i * 7, 1);
+                AddObstacle(2, base + i * 7 + 4, 1);
+                AddObstacle(3, base + i * 7 + 3, 3);
+                AddObstacle(4, base + i * 7 + 4, 1);
+                AddObstacle(5, base + i * 7, 1);
+            }
+        } else if(pattern == 6) {
+            //  __________
+            //0   ##   ##
+            //1    ##   ##
+            //2 #   ##   #
+            //3 ##   ##
+            //4  ##   ##
+            //5   ##   ##
+            const int iterations = 2 + rand() % 3;
+            for(int i = 0; i < iterations; ++i) {
+                AddObstacle(0, base + i * 10 + 2, 2);
+                AddObstacle(0, base + i * 10 + 7, 2);
+
+                AddObstacle(1, base + i * 10 + 3, 2);
+                AddObstacle(1, base + i * 10 + 8, 2);
+
+                AddObstacle(2, base + i * 10, 1);
+                AddObstacle(2, base + i * 10 + 4, 2);
+                AddObstacle(2, base + i * 10 + 9, 1);
+
+                AddObstacle(3, base + i * 10, 2);
+                AddObstacle(3, base + i * 10 + 5, 2);
+
+                AddObstacle(4, base + i * 10 + 1, 2);
+                AddObstacle(4, base + i * 10 + 6, 2);
+
+                AddObstacle(5, base + i * 10 + 2, 2);
+                AddObstacle(5, base + i * 10 + 7, 2);
+            }
+
         }
     } else {
         const int side = rand() % m_numSides;
