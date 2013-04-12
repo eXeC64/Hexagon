@@ -270,7 +270,7 @@ void HexagonModel::AddPattern()
             //3 ##   ##
             //4  ##   ##
             //5   ##   ##
-            const int iterations = 2 + rand() % 3;
+            const int iterations = 1 + rand() % 2;
             for(int i = 0; i < iterations; ++i) {
                 AddObstacle(0, base + i * 10 + 2, 2);
                 AddObstacle(0, base + i * 10 + 7, 2);
