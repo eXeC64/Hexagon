@@ -31,7 +31,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
     }
 
     const double    time = m_model->GetTime();
-    const double    hexagonRadius = 1.0;
+    const double    hexagonRadius = 1.0 + 0.15 * sin(time * 10);
     const double    playerRadius = 1.4;
     const int       numSides = m_model->GetNumSides();
 
@@ -61,7 +61,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
             bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.4));
         }
 
-        ConstructSideShape(bgSide, i, numSides, 1.0, 32);
+        ConstructSideShape(bgSide, i, numSides, hexagonRadius, 32);
         rt->draw(bgSide);
     }
 
