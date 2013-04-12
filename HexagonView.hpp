@@ -15,6 +15,7 @@ public:
     void            SetHueRange(const double range);
     void            SetHueSpeed(const double speed);
     void            Draw(sf::RenderTarget* rt)          const;
+    void            SetDrawPlayer(bool draw);
 private:
     const double    Hue()   const;
     const double    Sat()   const;
@@ -23,4 +24,6 @@ private:
     double          m_baseHue;
     double          m_hueRange;
     double          m_hueSpeed;
+
+    bool            m_drawPlayer;
 };

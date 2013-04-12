@@ -10,6 +10,8 @@ HexagonView::HexagonView()
 {
     m_model = 0;
 
+    m_drawPlayer = true;
+
     m_baseHue = 0;
     m_hueRange = 1.0;
     m_hueSpeed = 0.1;
@@ -90,7 +92,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
     }
 
     //Draw player
-    {
+    if(m_drawPlayer) {
         sf::ConvexShape playerShape(3);
         const double pos = m_model->GetPlayerPosition();
 
@@ -165,3 +167,7 @@ void HexagonView::SetHueSpeed(const double speed)
     m_hueSpeed = speed;
 }
 
+void HexagonView::SetDrawPlayer(bool draw)
+{
+    m_drawPlayer = draw;
+}
