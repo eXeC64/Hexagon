@@ -46,19 +46,19 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
     //Draw bg
     sf::ConvexShape bgSide(4);
     for(int i = 0; i < numSides; ++i) {
-        bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
+        bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.8));
         const double in = hexagonRadius - 0.1 + 0.05 * sin(time * 5);
         ConstructSideShape(bgSide, i, numSides, in, hexagonRadius);
         rt->draw(bgSide);
 
-        bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.3));
+        bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.2));
         ConstructSideShape(bgSide, i, numSides, 0, in);
         rt->draw(bgSide);
 
         if(i % 2) {
-            bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.3));
+            bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.2));
         } else {
-            bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.4));
+            bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.3));
         }
 
         ConstructSideShape(bgSide, i, numSides, hexagonRadius, 32);
@@ -67,7 +67,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
 
     //Draw obstacles
     sf::ConvexShape obsShape(4);
-    obsShape.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
+    obsShape.setFillColor(HSVtoRGB(Hue(), Sat(), 0.8));
     for(int i = 0; i < numSides; i++) {
         Obstacle* obs = m_model->GetObstacle(i);
 
@@ -109,13 +109,14 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
         const double posY = LInterp(lerp, posMinY, posMaxY);
 
         const double pulseScale = 0.1 + 0.025 * sin(time * 10);
+        const double turnMod = m_model->IsGameOver() ? 0 : m_model->GetPlayerDirection() * 15;
 
         playerShape.setPoint(0, sf::Vector2f( -0.20, -pulseScale ) );
         playerShape.setPoint(1, sf::Vector2f( 0, 0 ) );
         playerShape.setPoint(2, sf::Vector2f( -0.20, pulseScale ) );
         playerShape.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
         playerShape.setPosition(posX,posY);
-        playerShape.setRotation(pos * 360 / numSides + m_model->GetPlayerDirection() * 15);
+        playerShape.setRotation(pos * 360 / numSides + turnMod);
 
         rt->draw(playerShape);
     }
@@ -146,11 +147,7 @@ const double HexagonView::Hue() const
 
 const double HexagonView::Sat() const
 {
-    if(m_model && m_model->IsGameOver()) {
-        return 0.5;
-    } else {
-        return 1.0;
-    }
+    return 1.0;
 }
 
 void HexagonView::SetBaseHue(const double hue)
