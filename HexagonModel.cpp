@@ -311,6 +311,11 @@ const double HexagonModel::GetPlayerDistance() const
     return m_curDistance;
 }
 
+const int HexagonModel::GetPlayerDirection() const
+{
+    return m_playerDirection;
+}
+
 const double HexagonModel::GetTime() const
 {
     return m_curTime;

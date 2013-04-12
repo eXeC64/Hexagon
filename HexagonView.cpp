@@ -115,7 +115,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
         playerShape.setPoint(2, sf::Vector2f( -0.20, pulseScale ) );
         playerShape.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
         playerShape.setPosition(posX,posY);
-        playerShape.setRotation(pos * 360 / numSides);
+        playerShape.setRotation(pos * 360 / numSides + m_model->GetPlayerDirection() * 15);
 
         rt->draw(playerShape);
     }

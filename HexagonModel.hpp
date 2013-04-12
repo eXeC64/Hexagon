@@ -17,6 +17,7 @@ public:
     const int       GetNumSides()                               const;
     const double    GetPlayerPosition()                         const;
     const double    GetPlayerDistance()                         const;
+    const int       GetPlayerDirection()                        const;
     const double    GetTime()                                   const;
     const bool      IsGameOver()                                const;
     const double    GetRotation()                               const;
