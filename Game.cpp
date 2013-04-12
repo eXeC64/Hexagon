@@ -52,13 +52,6 @@ void Game::Run()
                     view.SetModel(m_model);
                 }
 
-                if(e.key.code == sf::Keyboard::P) {
-                    m_model->SetNumSides(m_model->GetNumSides() + 2);
-                }
-
-                if(e.key.code == sf::Keyboard::O) {
-                    m_model->SetNumSides(m_model->GetNumSides() - 2);
-                }
             }
 
         }
