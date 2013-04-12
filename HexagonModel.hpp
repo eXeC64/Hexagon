@@ -12,6 +12,7 @@ public:
     void            SetPlayerDirection(const int direction);
     void            SetGameSpeed(const double speed);
     void            SetNumSides(const int numSides);
+    void            SetInvincibility(const bool invincibility);
 
     Obstacle*       GetObstacle(const int side)                 const;
     const int       GetNumSides()                               const;
@@ -20,6 +21,7 @@ public:
     const int       GetPlayerDirection()                        const;
     const double    GetTime()                                   const;
     const bool      IsGameOver()                                const;
+    const bool      IsPlayerInvincible()                        const;
     const double    GetRotation()                               const;
 
 private:
@@ -44,6 +46,7 @@ private:
     double          m_rotationSpeed;
     double          m_nextRotationSpeedChange;
 
+    bool            m_invincible;
     bool            m_gameOver;
     int             m_playerDirection;
 

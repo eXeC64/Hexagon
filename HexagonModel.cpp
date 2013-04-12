@@ -24,6 +24,7 @@ HexagonModel::HexagonModel(const int maxSides) : m_maxSides(maxSides)
     m_rotationSpeed = 0;
     m_nextRotationSpeedChange = 0;
 
+    m_invincible = false;
     m_gameOver = false;
 
     m_numSides = 6;
@@ -81,16 +82,16 @@ void HexagonModel::Tick(const double dt)
     const double playerPosDelta = (m_playerDirection * m_playerSpeed * m_numSides * dt);
     const double newPlayerPos = Cycle(m_playerPosition + playerPosDelta, 0, m_numSides);
 
-    if(!WillCollide(newPlayerPos)) {
+    //if(!WillCollide(newPlayerPos)) {
         m_playerPosition = newPlayerPos;
-    }
+    //}
 
 
     //Move forward
     m_curDistance += m_obsSpeed * dt;
 
     //Check for collisions
-    if(WillCollide(m_playerPosition)) {
+    if(!m_invincible && WillCollide(m_playerPosition)) {
         m_gameOver = true;
     }
 
@@ -336,6 +337,11 @@ void HexagonModel::SetNumSides(const int numSides)
     m_numSides = Clamp(numSides, 4, m_maxSides);
 }
 
+void HexagonModel::SetInvincibility(const bool invincibility)
+{
+    m_invincible = invincibility;
+}
+
 Obstacle* HexagonModel::GetObstacle(const int side) const
 {
     if(side < 0 || side >= m_maxSides)
@@ -367,6 +373,11 @@ const int HexagonModel::GetPlayerDirection() const
 const double HexagonModel::GetTime() const
 {
     return m_curTime;
+}
+
+const bool HexagonModel::IsPlayerInvincible() const
+{
+    return m_invincible;
 }
 
 const bool HexagonModel::IsGameOver() const
