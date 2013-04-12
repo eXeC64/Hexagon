@@ -10,12 +10,12 @@ HexagonModel::HexagonModel(const int maxSides) : m_maxSides(maxSides)
     m_gameSpeed = 1.0;
 
     m_playerPosition = 0.5;
-    m_playerSpeed = 0.9;
+    m_playerSpeed = 1.2;
     m_playerDirection = 0;
 
     m_curDistance = 0;
     m_obsDistance = 8;
-    m_obsSpeed = 5;
+    m_obsSpeed = 6;
 
     m_curTime = 0;
     m_timeDue = 0;
