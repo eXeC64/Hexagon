@@ -1,8 +1,9 @@
 #include "Game.hpp"
 
-#include <sys/time.h>
+#include <SDL/SDL.h>
 
 #include "HexagonView.hpp"
+#include "Util.hpp"
 
 Game::Game()
 {
@@ -23,11 +24,13 @@ void Game::Run()
 {
     m_model = new HexagonModel();
 
+    /*
     HexagonView view;
     view.SetModel(m_model);
     view.SetBaseHue(0.3);
     view.SetHueRange(0.3);
     view.SetHueSpeed(0.5);
+    */
 
     m_window = new Win110ct(1920,1080,16);
 
@@ -46,17 +49,17 @@ void Game::Run()
             if(e.type == SDL_KEYDOWN)
             {
                 if(e.key.keysym.sym == SDLK_SPACE) {
-                    pause != pause;
+                    paused != paused;
                 }
 
-                if(e.key.keysym.sym == SDLK_Q) {
+                if(e.key.keysym.sym == SDLK_q) {
                     running = false;
                 }
 
-                if(e.key.keysym.sym == SDL_R) {
+                if(e.key.keysym.sym == SDLK_r) {
                     delete m_model;
                     m_model = new HexagonModel();
-                    view.SetModel(m_model);
+                    //view.SetModel(m_model);
                 }
             }
 
@@ -66,20 +69,20 @@ void Game::Run()
         {
             int dir = 0;
 
-            if(keystate[SDLK_LEFT] || keystate[SDLK_D]) {
+            if(keystate[SDLK_LEFT] || keystate[SDLK_d]) {
                 dir += 1;
             }
 
-            if(keystate[SDLK_RIGHT] || keystate[SDLK_A]) {
+            if(keystate[SDLK_RIGHT] || keystate[SDLK_a]) {
                 dir -= 1;
             }
 
             m_model->SetPlayerDirection(dir);
         }
 
-        if(keystate[SDLK_UP] || keystate[SDLK_W]) {
+        if(keystate[SDLK_UP] || keystate[SDLK_w]) {
             m_model->SetGameSpeed(2.0);
-        } else if(keystate[SDLK_DOWN] || keystate[SDLK_S]) {
+        } else if(keystate[SDLK_DOWN] || keystate[SDLK_s]) {
             m_model->SetGameSpeed(0.2);
         } else {
             m_model->SetGameSpeed(1.0);
@@ -94,14 +97,14 @@ void Game::Run()
         }
 
         //Clear
-        window->clear();
-        window->clearBack();
+        m_window->clear();
+        m_window->clearBack();
 
         //Draw
-        m_view->Draw(window);
+        //view.Draw(m_window);
 
         //Swapbuffer
-        window->render();
+        m_window->render();
 
     }
 }

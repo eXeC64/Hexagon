@@ -1,11 +1,11 @@
 #include "Util.hpp"
 
-#include <SFML/Graphics.hpp>
 #include <math.h>
+#include <stdlib.h>
 #include <sys/time.h>
 
 
-const sf::Color HSVtoRGB(const double h, const double s, const double v)
+const void HSVtoRGB(const double h, const double s, const double v, char rgb[3])
 {
     double r, g, b;
 
@@ -24,30 +24,16 @@ const sf::Color HSVtoRGB(const double h, const double s, const double v)
         case 5: r = v, g = p, b = q; break;
     }
 
-    return sf::Color(r * 255, g * 255, b * 255); 
-}
-
-void ConstructSideShape(sf::ConvexShape &shape,
-                                const int side, const int numSides,
-                                const double in, const double out)
-{
-    shape.setPointCount(4);
-    shape.setPoint(0, sf::Vector2f(in * cos( (side*2*M_PI)/numSides ),
-                                   in * sin( (side*2*M_PI)/numSides )));
-    shape.setPoint(1, sf::Vector2f(out * cos( (side*2*M_PI)/numSides ),
-                                   out * sin( (side*2*M_PI)/numSides )));
-    shape.setPoint(2, sf::Vector2f(out * cos( ((side+1)*2*M_PI)/numSides ),
-                                   out * sin( ((side+1)*2*M_PI)/numSides )));
-    shape.setPoint(3, sf::Vector2f(in * cos( ((side+1)*2*M_PI)/numSides ),
-                                   in * sin( ((side+1)*2*M_PI)/numSides )));
+    rgb[0] = r * 255;
+    rgb[1] = g * 255;
+    rgb[2] = b * 255;
 }
 
 const double GetTime()
 {
     timeval time;
-    timezone tz = {0,0};
 
-    gettimeofday(&time, &tz);
+    gettimeofday(&time, 0);
 
     return (double)time.tv_sec + (double)time.tv_usec * 1000000;
 }

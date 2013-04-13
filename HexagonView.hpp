@@ -14,7 +14,7 @@ public:
     void            SetBaseHue(const double hue);
     void            SetHueRange(const double range);
     void            SetHueSpeed(const double speed);
-    void            Draw(Lib110ct* win)                 const;
+    void            Draw(Win110ct* win)                 const;
     void            SetDrawPlayer(bool draw);
 private:
     const double    Hue()   const;

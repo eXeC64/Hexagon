@@ -1,5 +1,7 @@
-Hexagon: *.cpp *.hpp
-	g++ -g -O2 -o Hexagon *.cpp -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lGLEW -ljpeg -lXrandr -lfreetype -lpthread -lrt
+SRC = main.cpp Game.cpp HexagonModel.cpp Util.cpp
+
+Hexagon: $(SRC)
+	g++ -g -O2 -o Hexagon $(SRC) ../Uni/Lib110ct/Lib110ct.o -lSDL -lSDL_ttf -lSDL_gfx
 
 clean:
 	rm Hexagon
