@@ -37,9 +37,9 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
     const double    playerRadius = 1.4;
     const int       numSides = m_model->GetNumSides();
 
-    const double zoom = 1.0;
-    const double w = zoom * 16;
-    const double h = zoom * 9;
+    const double    zoom = 1.0;
+    const double    w = zoom * 16;
+    const double    h = zoom * 9;
     sf::View view(sf::FloatRect(-w/2,-h/2,w,h));
     view.setRotation(m_model->GetRotation());
 
