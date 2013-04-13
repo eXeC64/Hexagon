@@ -1,5 +1,7 @@
 #include "Game.hpp"
 
+#include <sys/time.h>
+
 #include "HexagonView.hpp"
 
 Game::Game()
@@ -27,75 +29,80 @@ void Game::Run()
     view.SetHueRange(0.3);
     view.SetHueSpeed(0.5);
 
-    m_window = new sf::RenderWindow(sf::VideoMode(1920,1080), "Hexagon");
+    m_window = new Win110ct(1920,1080,16);
 
     bool paused = false;
+    bool running = true;
 
-    sf::Clock clock;
-    while(m_window->isOpen())
+    double oldTime = GetTime();
+    while(running)
     {
-        sf::Event e;
-        while(m_window->pollEvent(e))
+        SDL_Event e;
+        while(SDL_PollEvent(&e))
         {
-            if(e.type == sf::Event::Closed)
-                m_window->close();
+            if(e.type == SDL_QUIT)
+                running = false;
 
-            if(e.type == sf::Event::KeyPressed)
+            if(e.type == SDL_KEYDOWN)
             {
-                if(e.key.code == sf::Keyboard::Space) {
-                    paused = !paused;
+                if(e.key.keysym.sym == SDLK_SPACE) {
+                    pause != pause;
                 }
 
-                if(e.key.code == sf::Keyboard::R) {
+                if(e.key.keysym.sym == SDLK_Q) {
+                    running = false;
+                }
+
+                if(e.key.keysym.sym == SDL_R) {
                     delete m_model;
                     m_model = new HexagonModel();
                     view.SetModel(m_model);
                 }
-
             }
 
         }
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            m_window->close();
-        }
-        
+        Uint8* keystate = SDL_GetKeyState(NULL);
         {
             int dir = 0;
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-               sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            if(keystate[SDLK_LEFT] || keystate[SDLK_D]) {
                 dir += 1;
             }
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
-               sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+            if(keystate[SDLK_RIGHT] || keystate[SDLK_A]) {
                 dir -= 1;
             }
 
             m_model->SetPlayerDirection(dir);
         }
 
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-           sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        if(keystate[SDLK_UP] || keystate[SDLK_W]) {
             m_model->SetGameSpeed(2.0);
-        } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
-                  sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        } else if(keystate[SDLK_DOWN] || keystate[SDLK_S]) {
             m_model->SetGameSpeed(0.2);
         } else {
             m_model->SetGameSpeed(1.0);
         }
 
-        const double dt = clock.restart().asSeconds();
+        const double newTime = GetTime();
+        const double dt = oldTime - newTime;
+        oldTime = newTime;
 
         if(!paused) {
             m_model->Simulate(dt);
         }
 
-        m_window->clear();
-        view.Draw(m_window);
-        m_window->display();
+        //Clear
+        window->clear();
+        window->clearBack();
+
+        //Draw
+        m_view->Draw(window);
+
+        //Swapbuffer
+        window->render();
+
     }
 }
 

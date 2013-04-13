@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "../Uni/Lib110ct/Lib110ct.h"
 
 #include "HexagonModel.hpp"
 
@@ -14,5 +14,5 @@ public:
 
 private:
     HexagonModel*       m_model;
-    sf::RenderWindow*   m_window;
+    Win110ct*           m_window;
 };

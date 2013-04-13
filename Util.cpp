@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <math.h>
+#include <sys/time.h>
 
 
 const sf::Color HSVtoRGB(const double h, const double s, const double v)
@@ -39,6 +40,16 @@ void ConstructSideShape(sf::ConvexShape &shape,
                                    out * sin( ((side+1)*2*M_PI)/numSides )));
     shape.setPoint(3, sf::Vector2f(in * cos( ((side+1)*2*M_PI)/numSides ),
                                    in * sin( ((side+1)*2*M_PI)/numSides )));
+}
+
+const double GetTime()
+{
+    timeval time;
+    timezone tz = {0,0};
+
+    gettimeofday(&time, &tz);
+
+    return (double)time.tv_sec + (double)time.tv_usec * 1000000;
 }
 
 const double LInterp(const double pos, const double min, const double max)

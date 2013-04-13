@@ -6,6 +6,8 @@ namespace sf
     class ConvexShape;
 }
 
+const double    GetTime();
+
 const double    LInterp(const double pos, const double min, const double max);
 const double    Clamp(const double val, const double min, const double max);
 const double    Cycle(const double val, const double min, const double max);
