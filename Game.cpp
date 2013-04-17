@@ -24,15 +24,13 @@ void Game::Run()
 {
     m_model = new HexagonModel();
 
-    /*
     HexagonView view;
     view.SetModel(m_model);
     view.SetBaseHue(0.3);
     view.SetHueRange(0.3);
     view.SetHueSpeed(0.5);
-    */
 
-    m_window = new Win110ct(1920,1080,16);
+    m_window = new Win110ct(720,480,16);
 
     bool paused = false;
     bool running = true;
@@ -59,7 +57,7 @@ void Game::Run()
                 if(e.key.keysym.sym == SDLK_r) {
                     delete m_model;
                     m_model = new HexagonModel();
-                    //view.SetModel(m_model);
+                    view.SetModel(m_model);
                 }
             }
 
@@ -89,19 +87,15 @@ void Game::Run()
         }
 
         const double newTime = GetTime();
-        const double dt = oldTime - newTime;
+        const double dt = newTime - oldTime;
         oldTime = newTime;
 
         if(!paused) {
             m_model->Simulate(dt);
         }
 
-        //Clear
-        m_window->clear();
-        m_window->clearBack();
-
         //Draw
-        //view.Draw(m_window);
+        view.Draw(m_window->getGraphics());
 
         //Swapbuffer
         m_window->render();

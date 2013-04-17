@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Uni/Lib110ct/Lib110ct.h"
+#include <SDL/SDL.h>
 
 #include "HexagonModel.hpp"
 
@@ -14,7 +14,7 @@ public:
     void            SetBaseHue(const double hue);
     void            SetHueRange(const double range);
     void            SetHueSpeed(const double speed);
-    void            Draw(Win110ct* win)                 const;
+    void            Draw(SDL_Surface* rt)               const;
     void            SetDrawPlayer(bool draw);
 private:
     const double    Hue()   const;

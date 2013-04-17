@@ -1,41 +1,17 @@
 #include "Util.hpp"
+#include "Polygon.hpp"
 
 #include <math.h>
 #include <stdlib.h>
-#include <sys/time.h>
-
-
-const void HSVtoRGB(const double h, const double s, const double v, char rgb[3])
-{
-    double r, g, b;
-
-    const int       i = floor(h * 6);
-    const double    f = h *  6 - i;
-    const double    p = v * (1 - s);
-    const double    q = v * (1 - f * s);
-    const double    t = v * (1 - (1 - f) * s);
-
-    switch(i % 6){
-        case 0: r = v, g = t, b = p; break;
-        case 1: r = q, g = v, b = p; break;
-        case 2: r = p, g = v, b = t; break;
-        case 3: r = p, g = q, b = v; break;
-        case 4: r = t, g = p, b = v; break;
-        case 5: r = v, g = p, b = q; break;
-    }
-
-    rgb[0] = r * 255;
-    rgb[1] = g * 255;
-    rgb[2] = b * 255;
-}
+#include <time.h>
 
 const double GetTime()
 {
-    timeval time;
+    timespec time;
 
-    gettimeofday(&time, 0);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &time);
 
-    return (double)time.tv_sec + (double)time.tv_usec * 1000000;
+    return (double)time.tv_sec + (double)time.tv_nsec * 0.000000001;
 }
 
 const double LInterp(const double pos, const double min, const double max)
@@ -84,3 +60,23 @@ const int Twist(const int direction, const int side, const int numSides)
     return abs(6 + mult * side) % numSides;
 }
 
+const double Normalise(double value, double min, double max)
+{
+    const double v = ((value - min) / (max - min));
+    return v ? v : -v;
+}
+
+void ConstructSideShape(Polygon &shape,
+                                const int side, const int numSides,
+                                const double in, const double out)
+{
+    shape.SetNumVertices(4);
+    shape.SetVertex(0, in * cos( (side*2*M_PI)/numSides),
+                       in * sin( (side*2*M_PI)/numSides ));
+    shape.SetVertex(1, out * cos( (side*2*M_PI)/numSides ),
+                       out * sin( (side*2*M_PI)/numSides ));
+    shape.SetVertex(2, out * cos( ((side+1)*2*M_PI)/numSides ),
+                       out * sin( ((side+1)*2*M_PI)/numSides ));
+    shape.SetVertex(3, in * cos( ((side+1)*2*M_PI)/numSides ),
+                       in * sin( ((side+1)*2*M_PI)/numSides ));
+}

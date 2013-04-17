@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "Util.hpp"
+#include "Polygon.hpp"
 
 
 HexagonView::HexagonView()
@@ -26,7 +27,7 @@ void HexagonView::SetModel(HexagonModel* model)
     m_model = model;
 }
 
-void HexagonView::Draw(sf::RenderTarget* rt) const
+void HexagonView::Draw(SDL_Surface* rt) const
 {
     if(!m_model) {
         return;
@@ -40,36 +41,36 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
     const double    zoom = 1.0;
     const double    w = zoom * 16;
     const double    h = zoom * 9;
-    sf::View view(sf::FloatRect(-w/2,-h/2,w,h));
-    view.setRotation(m_model->GetRotation());
 
-    rt->setView(view);
+    View view;
+    view.SetViewRect(-w/2,-h/2, w/2, h/2);
+    view.SetRotation(m_model->GetRotation());
 
     //Draw bg
-    sf::ConvexShape bgSide(4);
+    Polygon bgSide(&view, 4);
     for(int i = 0; i < numSides; ++i) {
-        bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.8));
+        bgSide.SetHSV(Hue(), Sat(), 0.8);
         const double in = hexagonRadius - 0.1 + 0.05 * sin(time * 5);
         ConstructSideShape(bgSide, i, numSides, in, hexagonRadius);
-        rt->draw(bgSide);
+        bgSide.Draw(rt);
 
-        bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.2));
+        bgSide.SetHSV(Hue(), Sat(), 0.2);
         ConstructSideShape(bgSide, i, numSides, 0, in);
-        rt->draw(bgSide);
+        bgSide.Draw(rt);
 
         if(i % 2) {
-            bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.2));
+            bgSide.SetHSV(Hue(), Sat(), 0.2);
         } else {
-            bgSide.setFillColor(HSVtoRGB(Hue(), Sat(), 0.3));
+            bgSide.SetHSV(Hue(), Sat(), 0.3);
         }
 
         ConstructSideShape(bgSide, i, numSides, hexagonRadius, 32);
-        rt->draw(bgSide);
+        bgSide.Draw(rt);
     }
 
     //Draw obstacles
-    sf::ConvexShape obsShape(4);
-    obsShape.setFillColor(HSVtoRGB(Hue(), Sat(), 0.8));
+    Polygon obsShape(&view, 4);
+    obsShape.SetHSV(Hue(), Sat(), 0.8);
     for(int i = 0; i < numSides; i++) {
         Obstacle* obs = m_model->GetObstacle(i);
 
@@ -84,7 +85,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
 
             if(end > hexagonRadius) {
                 ConstructSideShape(obsShape, i, numSides, start, end);
-                rt->draw(obsShape);
+                obsShape.Draw(rt);
             }
 
             obs = obs->next;
@@ -93,7 +94,7 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
 
     //Draw player
     if(m_drawPlayer) {
-        sf::ConvexShape playerShape(3);
+        Polygon playerShape(&view, 4);
         const double pos = m_model->GetPlayerPosition();
 
         //Get the two corners the player is between
@@ -113,14 +114,13 @@ void HexagonView::Draw(sf::RenderTarget* rt) const
         const double pulseScale = 0.1 + 0.025 * sin(time * 10);
         const double turnMod = m_model->IsGameOver() ? 0 : m_model->GetPlayerDirection() * 15;
 
-        playerShape.setPoint(0, sf::Vector2f( -0.20, -pulseScale ) );
-        playerShape.setPoint(1, sf::Vector2f( 0, 0 ) );
-        playerShape.setPoint(2, sf::Vector2f( -0.20, pulseScale ) );
-        playerShape.setFillColor(HSVtoRGB(Hue(), Sat(), 1.0));
-        playerShape.setPosition(posX,posY);
-        playerShape.setRotation(pos * 360 / numSides + turnMod);
+        playerShape.SetVertex(0, posX - 0.05, posY - 0.05 );
+        playerShape.SetVertex(1, posX + 0.05, posY - 0.05);
+        playerShape.SetVertex(2, posX + 0.05, posY + 0.05);
+        playerShape.SetVertex(3, posX - 0.05, posY + 0.05);
+        playerShape.SetHSV(Hue(), Sat(), 1.0);
 
-        rt->draw(playerShape);
+        playerShape.Draw(rt);
     }
 }
 
