@@ -47,7 +47,7 @@ void Game::Run()
             if(e.type == SDL_KEYDOWN)
             {
                 if(e.key.keysym.sym == SDLK_SPACE) {
-                    paused != paused;
+                    paused = !paused;
                 }
 
                 if(e.key.keysym.sym == SDLK_q) {
