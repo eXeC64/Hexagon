@@ -5,6 +5,7 @@
 
 #include "Util.hpp"
 #include "Polygon.hpp"
+#include "View.hpp"
 
 
 HexagonView::HexagonView()
