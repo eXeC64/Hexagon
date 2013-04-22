@@ -30,7 +30,7 @@ void Game::Run()
     view.SetHueRange(0.3);
     view.SetHueSpeed(0.5);
 
-    m_window = new Win110ct(720,480,16);
+    m_window = new Win110ct(1280,720,16);
 
     bool paused = false;
     bool running = true;

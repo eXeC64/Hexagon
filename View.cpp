@@ -10,8 +10,8 @@ View::View()
     m_top = 9;
     m_bottom = 0;
     m_rotation = 0;
-    m_width = 720;
-    m_height = 480;
+    m_width = 1280;
+    m_height = 720;
     m_ct = 0;
     m_st = 0;
 }
