@@ -87,7 +87,12 @@ void Game::Run()
             m_model->SetGameSpeed(1.0);
         }
 
-        const double dt = clock.restart().asSeconds();
+        double dt = clock.restart().asSeconds();
+
+        //More than a second? We must be debugging.
+        if(dt > 1.0) {
+            dt = 0.01;
+        }
 
         if(!paused) {
             m_model->Simulate(dt);
