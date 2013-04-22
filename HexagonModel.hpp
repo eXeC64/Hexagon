@@ -65,9 +65,3 @@ struct Obstacle
     double          end;
     Obstacle*       next;
 };
-
-struct Pattern
-{
-    int             numObstacles[6];
-    Obstacle        obstacles[6][10];
-};
