@@ -28,6 +28,7 @@ void Game::Run()
     view.SetHueSpeed(0.5);
 
     m_window = new sf::RenderWindow(sf::VideoMode(1920,1080), "Hexagon");
+    m_window->setFramerateLimit(60);
 
     bool paused = false;
 
