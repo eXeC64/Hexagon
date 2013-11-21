@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SDL2/SDL.h>
 
 #include "HexagonModel.hpp"
 
@@ -14,5 +14,6 @@ public:
 
 private:
     HexagonModel*       m_model;
-    sf::RenderWindow*   m_window;
+    SDL_Window*         m_window;
+    SDL_Surface*        m_surface;
 };

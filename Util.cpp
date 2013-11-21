@@ -1,10 +1,10 @@
 #include "Util.hpp"
 
-#include <SFML/Graphics.hpp>
 #include <math.h>
+#include <stdlib.h>
 
 
-const sf::Color HSVtoRGB(const double h, const double s, const double v)
+const void HSVtoRGB(const double h, const double s, const double v, double* rgb)
 {
     double r, g, b;
 
@@ -23,22 +23,24 @@ const sf::Color HSVtoRGB(const double h, const double s, const double v)
         case 5: r = v, g = p, b = q; break;
     }
 
-    return sf::Color(r * 255, g * 255, b * 255); 
+    rgb[0] = r;
+    rgb[1] = g;
+    rgb[2] = b;
 }
 
-void ConstructSideShape(sf::ConvexShape &shape,
+void DrawSideShape(cairo_t* context,
                                 const int side, const int numSides,
                                 const double in, const double out)
 {
-    shape.setPointCount(4);
-    shape.setPoint(0, sf::Vector2f(in * cos( (side*2*M_PI)/numSides ),
-                                   in * sin( (side*2*M_PI)/numSides )));
-    shape.setPoint(1, sf::Vector2f(out * cos( (side*2*M_PI)/numSides ),
-                                   out * sin( (side*2*M_PI)/numSides )));
-    shape.setPoint(2, sf::Vector2f(out * cos( ((side+1)*2*M_PI)/numSides ),
-                                   out * sin( ((side+1)*2*M_PI)/numSides )));
-    shape.setPoint(3, sf::Vector2f(in * cos( ((side+1)*2*M_PI)/numSides ),
-                                   in * sin( ((side+1)*2*M_PI)/numSides )));
+    cairo_move_to(context, in * cos( (side*2*M_PI)/numSides ),
+                  in * sin( (side*2*M_PI)/numSides ));
+    cairo_line_to(context, out * cos( (side*2*M_PI)/numSides ),
+                  out * sin( (side*2*M_PI)/numSides ));
+    cairo_line_to(context, out * cos( ((side+1)*2*M_PI)/numSides ),
+                  out * sin( ((side+1)*2*M_PI)/numSides ));
+    cairo_line_to(context, in * cos( ((side+1)*2*M_PI)/numSides ),
+                  in * sin( ((side+1)*2*M_PI)/numSides ));
+    cairo_close_path(context);
 }
 
 const double LInterp(const double pos, const double min, const double max)
@@ -86,4 +88,3 @@ const int Twist(const int direction, const int side, const int numSides)
     const int mult = direction ? 1 : -1;
     return abs(6 + mult * side) % numSides;
 }
-

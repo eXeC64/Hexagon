@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SDL2/SDL.h>
 
 #include "HexagonModel.hpp"
 
@@ -14,7 +14,7 @@ public:
     void            SetBaseHue(const double hue);
     void            SetHueRange(const double range);
     void            SetHueSpeed(const double speed);
-    void            Draw(sf::RenderTarget* rt)          const;
+    void            Draw(SDL_Surface* s)                const;
     void            SetDrawPlayer(bool draw);
 private:
     const double    Hue()   const;

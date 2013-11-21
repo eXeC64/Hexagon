@@ -69,7 +69,7 @@ void HexagonModel::Tick(const double dt)
     //Rotate game
     if(m_curTime >= m_nextRotationSpeedChange) {
         m_nextRotationSpeedChange = m_curTime + 5 + rand() % 10;
-        m_rotationSpeed = 60 + rand() % 60;
+        m_rotationSpeed = (60 + rand() % 60) * 0.03;
         if(rand() % 2) {
             m_rotationSpeed = -m_rotationSpeed;
         }

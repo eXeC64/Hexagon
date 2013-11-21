@@ -2,23 +2,42 @@
 
 #include "HexagonView.hpp"
 
+#include <SDL2/SDL.h>
+
+#include <iostream>
+#include <time.h>
+
 Game::Game()
 {
     m_model = 0;
     m_window = 0;
+    m_surface = 0;
 }
 
 Game::~Game()
 {
     if(m_model)
         delete m_model;
-
-    if(m_window)
-        delete m_window;
 }
 
 void Game::Run()
 {
+
+    if(SDL_Init(SDL_INIT_EVERYTHING) == -1) {
+        std::cout << SDL_GetError() << std::endl;
+        return;
+    }
+
+    m_window = SDL_CreateWindow("Hexagon", SDL_WINDOWPOS_CENTERED,
+            SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN);
+
+    m_surface = SDL_CreateRGBSurface(0, 1280, 720, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0);
+
+    if(!m_window) {
+        std::cout << SDL_GetError() << std::endl;
+        return;
+    }
+
     m_model = new HexagonModel();
 
     HexagonView view;
@@ -27,27 +46,29 @@ void Game::Run()
     view.SetHueRange(0.3);
     view.SetHueSpeed(0.5);
 
-    m_window = new sf::RenderWindow(sf::VideoMode(1920,1080), "Hexagon");
-    m_window->setFramerateLimit(60);
-
     bool paused = false;
+    bool running = true;
 
-    sf::Clock clock;
-    while(m_window->isOpen())
+    timespec timespec;
+    clock_gettime(CLOCK_MONOTONIC, &timespec);
+
+    double prevTime = timespec.tv_sec + timespec.tv_nsec * 0.000000001;
+    while(running)
     {
-        sf::Event e;
-        while(m_window->pollEvent(e))
-        {
-            if(e.type == sf::Event::Closed)
-                m_window->close();
+        SDL_Event e;
+        while(SDL_PollEvent(&e)) {
 
-            if(e.type == sf::Event::KeyPressed)
+            if(e.type == SDL_QUIT) {
+                running = false;
+            }
+
+            if(e.type == SDL_KEYDOWN)
             {
-                if(e.key.code == sf::Keyboard::Space) {
+                if(e.key.keysym.sym == SDLK_SPACE) {
                     paused = !paused;
                 }
 
-                if(e.key.code == sf::Keyboard::R) {
+                if(e.key.keysym.sym == SDLK_r) {
                     delete m_model;
                     m_model = new HexagonModel();
                     view.SetModel(m_model);
@@ -57,20 +78,22 @@ void Game::Run()
 
         }
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            m_window->close();
+        const Uint8* keyboard = SDL_GetKeyboardState(NULL);
+
+        if(keyboard[SDL_SCANCODE_ESCAPE]) {
+            running = false;
         }
         
         {
             int dir = 0;
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-               sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            if(keyboard[SDL_SCANCODE_RIGHT] ||
+               keyboard[SDL_SCANCODE_D]) {
                 dir += 1;
             }
 
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
-               sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+            if(keyboard[SDL_SCANCODE_LEFT] ||
+               keyboard[SDL_SCANCODE_A]) {
                 dir -= 1;
             }
 
@@ -78,17 +101,21 @@ void Game::Run()
         }
 
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-           sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        if(keyboard[SDL_SCANCODE_UP] ||
+           keyboard[SDL_SCANCODE_W]) {
             m_model->SetGameSpeed(2.0);
-        } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
-                  sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        } else if(keyboard[SDL_SCANCODE_DOWN] ||
+                  keyboard[SDL_SCANCODE_S]) {
             m_model->SetGameSpeed(0.2);
         } else {
             m_model->SetGameSpeed(1.0);
         }
 
-        double dt = clock.restart().asSeconds();
+        clock_gettime(CLOCK_MONOTONIC, &timespec);
+        double curTime = timespec.tv_sec + timespec.tv_nsec * 0.000000001;
+
+        double dt = curTime - prevTime;
+        prevTime = curTime;
 
         //More than a second? We must be debugging.
         if(dt > 1.0) {
@@ -99,9 +126,18 @@ void Game::Run()
             m_model->Simulate(dt);
         }
 
-        m_window->clear();
-        view.Draw(m_window);
-        m_window->display();
+
+        //Draw to our surface
+        view.Draw(m_surface);
+
+        //Copy our surface to window surface
+        {
+            SDL_Rect r = {0,0,1280,720};
+            SDL_BlitSurface(m_surface, &r, SDL_GetWindowSurface(m_window), &r);
+        }
+
+        //Display window surface
+        SDL_UpdateWindowSurface(m_window);
     }
 }
 
